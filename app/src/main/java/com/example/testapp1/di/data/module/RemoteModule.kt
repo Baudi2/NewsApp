@@ -1,19 +1,21 @@
 package com.example.testapp1.di.data.module
 
 import com.example.testapp1.data.remote.api.NewsAPI
+import com.example.testapp1.di.data.DataScope
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-object RemoteModule {
+class RemoteModule {
+
     @Provides
-    @JvmStatic
+    @DataScope
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
-    @JvmStatic
+    @DataScope
     fun provideRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
             .baseUrl(NewsAPI.BASE_URL)
@@ -22,6 +24,6 @@ object RemoteModule {
     }
 
     @Provides
-    @JvmStatic
+    @DataScope
     fun provideNewsApi(retrofit: Retrofit): NewsAPI = retrofit.create(NewsAPI::class.java)
 }

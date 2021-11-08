@@ -5,32 +5,33 @@ import com.example.testapp1.business.SaveRemoteArticleUseCase
 import com.example.testapp1.business.SavedNewsInteractor
 import com.example.testapp1.business.SearchedNewsInteractor
 import com.example.testapp1.data.repository.NewsRepository
+import com.example.testapp1.di.domain.DomainScope
 import dagger.Module
 import dagger.Provides
 
 @Module
-object InteractorModule {
+class InteractorModule {
 
     @Provides
-    @JvmStatic
+    @DomainScope
     fun provideBreakingNewsInteractor(repository: NewsRepository) : BreakingNewsInteractor {
         return BreakingNewsInteractor(repository)
     }
 
     @Provides
-    @JvmStatic
+    @DomainScope
     fun provideSavedNewsInteractor(repository: NewsRepository) : SavedNewsInteractor {
         return SavedNewsInteractor(repository)
     }
 
     @Provides
-    @JvmStatic
+    @DomainScope
     fun provideSaveRemoteArticleUseCase(repository: NewsRepository) : SaveRemoteArticleUseCase {
         return SaveRemoteArticleUseCase(repository)
     }
 
     @Provides
-    @JvmStatic
+    @DomainScope
     fun provideSearchedNewsInteractor(repository: NewsRepository) : SearchedNewsInteractor {
         return SearchedNewsInteractor(repository)
     }

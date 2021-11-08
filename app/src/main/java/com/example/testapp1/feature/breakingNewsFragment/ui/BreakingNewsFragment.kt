@@ -33,9 +33,6 @@ class BreakingNewsFragment :
     var isScrolling = false
 
     override fun onAttach(context: Context) {
-        (requireActivity().application as NewsApplication).applicationComponent.injectBreakingNewsFragment(
-            this
-        )
         super.onAttach(context)
     }
 

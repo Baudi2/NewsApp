@@ -1,5 +1,6 @@
 package com.example.testapp1.di.feature.component
 
+import com.example.testapp1.di.feature.FeatureScope
 import com.example.testapp1.di.domain.component.DomainComponent
 import com.example.testapp1.di.feature.module.ArticleFragmentModule
 import com.example.testapp1.di.feature.module.BreakingNewsFragmentModule
@@ -15,6 +16,7 @@ import dagger.Component
     dependencies = [DomainComponent::class], modules = [ArticleFragmentModule::class,
         BreakingNewsFragmentModule::class, SavedNewsFragmentModule::class, SearchNewsFragmentModule::class]
 )
+@FeatureScope
 interface FeatureComponent {
     fun inject(articleFragment: ArticleFragment)
     fun inject(breakingNewsFragment: BreakingNewsFragment)

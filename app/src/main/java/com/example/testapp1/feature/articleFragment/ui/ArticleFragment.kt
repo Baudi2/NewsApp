@@ -1,5 +1,6 @@
 package com.example.testapp1.feature.articleFragment.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebViewClient
@@ -15,6 +16,10 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
     @Inject
     lateinit var viewModel: ArticleFragmentViewModel
     private val args: ArticleFragmentArgs by navArgs()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
