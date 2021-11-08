@@ -69,12 +69,13 @@ class SavedNewsFragment :
     }
 
     private fun navigate(articleEntity: ArticleEntity) {
-        findNavController().navigate(
-            SavedNewsFragmentDirections.actionSavedNewsFragmentToArticleFragment(
-                null,
-                articleEntity
-            )
-        )
+//        findNavController().navigate(
+//            SavedNewsFragmentDirections.actionSavedNewsFragmentToArticleFragment(
+//                null,
+//                articleEntity
+//            )
+//        )
+        //TODO: deal with navigation
     }
 
     private fun setupRecyclerView() {

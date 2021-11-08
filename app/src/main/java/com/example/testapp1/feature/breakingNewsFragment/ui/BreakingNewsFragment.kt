@@ -120,12 +120,13 @@ class BreakingNewsFragment :
     }
 
     private fun navigate(articleRemote: ArticleRemote) {
-        findNavController().navigate(
-            BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(
-                articleRemote,
-                null
-            )
-        )
+//        findNavController().navigate(
+//            BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(
+//                articleRemote,
+//                null
+//            )
+//        )
+        //TODO: deal with navigation
     }
 
     private fun setupRecyclerView() {

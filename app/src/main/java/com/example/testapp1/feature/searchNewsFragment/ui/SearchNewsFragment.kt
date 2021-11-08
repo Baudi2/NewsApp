@@ -154,12 +154,13 @@ class SearchNewsFragment :
     }
 
     private fun navigate(article: ArticleRemote) {
-        findNavController().navigate(
-            SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleFragment(
-                article,
-                null
-            )
-        )
+//        findNavController().navigate(
+//            SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleFragment(
+//                article,
+//                null
+//            )
+//        )
+        //TODO: deal with navigation
     }
 
     private companion object {
