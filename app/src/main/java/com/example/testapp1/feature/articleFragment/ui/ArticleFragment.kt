@@ -4,10 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebViewClient
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.testapp1.databinding.FragmentArticleBinding
 import com.example.testapp1.di.feature.component.DaggerFeatureComponent
-import com.example.testapp1.di.feature.module.ArticleFragmentModule
+import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.articleFragment.presentation.ArticleFragmentViewModel
 import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.google.android.material.snackbar.Snackbar
@@ -16,13 +17,15 @@ import javax.inject.Inject
 class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBinding::inflate) {
 
     @Inject
-    lateinit var viewModel: ArticleFragmentViewModel
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel: ArticleFragmentViewModel by viewModels {
+        viewModelFactory
+    }
     private val args: ArticleFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
             .builder()
-            .articleFragmentModule(ArticleFragmentModule(this))
             .build()
             .inject(this)
         super.onAttach(context)

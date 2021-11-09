@@ -11,8 +11,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
 
-class SearchNewsViewModel(private val searchedNewsInteractor: SearchedNewsInteractor) : ViewModel() {
+class SearchNewsViewModel @Inject constructor(
+    private val searchedNewsInteractor: SearchedNewsInteractor
+) : ViewModel() {
 
     private val searchNewsMutable: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val searchNews: LiveData<Resource<NewsResponse>>
@@ -26,9 +29,10 @@ class SearchNewsViewModel(private val searchedNewsInteractor: SearchedNewsIntera
         try {
             if (hasInternetConnection) {
                 viewModelScope.launch(Dispatchers.IO) {
-                    searchNewsMutable.postValue(handleSearchNewsResponse(
-                        searchedNewsInteractor.get(searchQuery, searchNewsPage)
-                    )
+                    searchNewsMutable.postValue(
+                        handleSearchNewsResponse(
+                            searchedNewsInteractor.get(searchQuery, searchNewsPage)
+                        )
                     )
                 }
             } else {

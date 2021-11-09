@@ -3,13 +3,14 @@ package com.example.testapp1.feature.savedNewsFragment.ui
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp1.data.local.model.ArticleEntity
 import com.example.testapp1.databinding.FragmentSavedNewsBinding
 import com.example.testapp1.di.feature.component.DaggerFeatureComponent
-import com.example.testapp1.di.feature.module.SavedNewsFragmentModule
+import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.savedNewsFragment.presentation.SavedNewsViewModel
 import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.google.android.material.snackbar.Snackbar
@@ -21,13 +22,15 @@ class SavedNewsFragment :
     BaseFragment<FragmentSavedNewsBinding>(FragmentSavedNewsBinding::inflate) {
 
     @Inject
-    lateinit var viewModel: SavedNewsViewModel
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel: SavedNewsViewModel by viewModels {
+        viewModelFactory
+    }
     private val newsAdapter by lazy { SavedNewsAdapter() }
 
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
             .builder()
-            .savedNewsFragmentModule(SavedNewsFragmentModule(this))
             .build()
             .inject(this)
         super.onAttach(context)

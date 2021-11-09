@@ -5,18 +5,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp1.data.remote.model.ArticleRemote
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.databinding.FragmentBreakingNewsBinding
 import com.example.testapp1.di.feature.component.DaggerFeatureComponent
-import com.example.testapp1.di.feature.module.BreakingNewsFragmentModule
+import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.breakingNewsFragment.presentation.BreakingNewsViewModel
 import com.example.testapp1.feature.ui.NewsAdapter
-import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.Constants.Companion.QUERY_PAGE_SIZE
 import com.example.testapp1.utils.Resource
+import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.hasInternetConnection
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 import javax.inject.Inject
@@ -25,7 +26,10 @@ class BreakingNewsFragment :
     BaseFragment<FragmentBreakingNewsBinding>(FragmentBreakingNewsBinding::inflate) {
 
     @Inject
-    lateinit var viewModel: BreakingNewsViewModel
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel: BreakingNewsViewModel by viewModels {
+        viewModelFactory
+    }
     private val newsAdapter by lazy { NewsAdapter() }
 
     var isLoading = false
@@ -35,7 +39,6 @@ class BreakingNewsFragment :
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
             .builder()
-            .breakingNewsFragmentModule(BreakingNewsFragmentModule(this))
             .build()
             .inject(this)
         super.onAttach(context)

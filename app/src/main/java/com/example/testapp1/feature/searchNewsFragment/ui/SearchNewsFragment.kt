@@ -6,13 +6,14 @@ import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp1.data.remote.model.ArticleRemote
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.databinding.FragmentSearchNewsBinding
 import com.example.testapp1.di.feature.component.DaggerFeatureComponent
-import com.example.testapp1.di.feature.module.SearchNewsFragmentModule
+import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.searchNewsFragment.presentation.SearchNewsViewModel
 import com.example.testapp1.feature.ui.NewsAdapter
 import com.example.testapp1.utils.baseClasses.BaseFragment
@@ -33,7 +34,10 @@ class SearchNewsFragment :
     BaseFragment<FragmentSearchNewsBinding>(FragmentSearchNewsBinding::inflate) {
 
     @Inject
-    lateinit var viewModel: SearchNewsViewModel
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel: SearchNewsViewModel by viewModels {
+        viewModelFactory
+    }
     private val newsAdapter by lazy { NewsAdapter() }
 
     var isLoading = false
@@ -43,7 +47,6 @@ class SearchNewsFragment :
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
             .builder()
-            .searchNewsFragmentModule(SearchNewsFragmentModule(this))
             .build()
             .inject(this)
         super.onAttach(context)

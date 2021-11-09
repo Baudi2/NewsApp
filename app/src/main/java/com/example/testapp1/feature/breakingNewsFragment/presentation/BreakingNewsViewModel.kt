@@ -11,9 +11,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
 
-class BreakingNewsViewModel(private val breakingNewsInteractor: BreakingNewsInteractor) :
-    ViewModel() {
+class BreakingNewsViewModel @Inject constructor(
+    private val breakingNewsInteractor: BreakingNewsInteractor
+) : ViewModel() {
 
     private val breakingNewsMutable: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val breakingNews: LiveData<Resource<NewsResponse>>
