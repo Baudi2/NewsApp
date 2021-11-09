@@ -78,6 +78,8 @@ class BreakingNewsFragment :
             navigate(it)
         }
 
+        viewModel.getBreakingNews("ru", requireContext().hasInternetConnection())
+
         viewModel.breakingNews.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
