@@ -3,7 +3,6 @@ package com.example.testapp1.feature
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -22,11 +21,12 @@ class NewsActivity : AppCompatActivity() {
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
-            navController = navHostFragment.findNavController()
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.container_for_fragments) as NavHostFragment
+        navController = navHostFragment.findNavController()
 
         bottomNavigationView.setupWithNavController(navController)
 
-       binding.bottomNavigationView.setupWithNavController(newsNavHostFragment.findNavController())
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 }

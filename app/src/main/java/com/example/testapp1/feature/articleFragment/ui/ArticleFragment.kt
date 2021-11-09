@@ -7,6 +7,14 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.testapp1.databinding.FragmentArticleBinding
+import com.example.testapp1.di.app.ApplicationContextModule
+import com.example.testapp1.di.app.DaggerApplicationComponent
+import com.example.testapp1.di.data.component.DaggerDataComponent
+import com.example.testapp1.di.data.module.LocaleModule
+import com.example.testapp1.di.data.module.RemoteModule
+import com.example.testapp1.di.data.module.RepositoryModule
+import com.example.testapp1.di.domain.component.DaggerDomainComponent
+import com.example.testapp1.di.domain.module.InteractorModule
 import com.example.testapp1.di.feature.component.DaggerFeatureComponent
 import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.articleFragment.presentation.ArticleFragmentViewModel
@@ -26,6 +34,23 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
             .builder()
+            .domainComponent(
+                DaggerDomainComponent.builder()
+                    .interactorModule(InteractorModule())
+                    .dataComponent(
+                        DaggerDataComponent.builder()
+                            .localeModule(LocaleModule())
+                            .remoteModule(RemoteModule())
+                            .repositoryModule(RepositoryModule())
+                            .applicationComponent(
+                                DaggerApplicationComponent.builder()
+                                    .applicationContextModule(ApplicationContextModule(requireActivity().application))
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .build()
+            )
             .build()
             .inject(this)
         super.onAttach(context)
