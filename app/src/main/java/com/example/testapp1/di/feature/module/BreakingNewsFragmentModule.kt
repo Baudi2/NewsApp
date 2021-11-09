@@ -20,7 +20,7 @@ class BreakingNewsFragmentModule(private val breakingNewsFragment: BreakingNewsF
 
     @Provides
     @FeatureScope
-    fun provideBreakingNewsViewModel(breakingNewsViewModelFactory: BreakingNewsViewModelFactory) : BreakingNewsViewModel {
+    fun provideBreakingNewsViewModel(breakingNewsViewModelFactory: BreakingNewsViewModelFactory): BreakingNewsViewModel {
         return ViewModelProvider(
             breakingNewsFragment,
             breakingNewsViewModelFactory

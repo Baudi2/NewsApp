@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 
-
+@Suppress("DEPRECATION")
 fun Context.hasInternetConnection(): Boolean {
     var result = false
     val connectivityManager = this.getSystemService(

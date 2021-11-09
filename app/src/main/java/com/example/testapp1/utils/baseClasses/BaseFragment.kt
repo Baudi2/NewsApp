@@ -1,4 +1,4 @@
-package com.example.testapp1.utils.BaseClasses
+package com.example.testapp1.utils.baseClasses
 
 import android.os.Bundle
 import android.view.LayoutInflater

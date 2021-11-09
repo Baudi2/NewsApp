@@ -1,19 +1,21 @@
 package com.example.testapp1.feature.searchNewsFragment.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp1.data.remote.model.ArticleRemote
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.databinding.FragmentSearchNewsBinding
+import com.example.testapp1.di.feature.component.DaggerFeatureComponent
+import com.example.testapp1.di.feature.module.SearchNewsFragmentModule
 import com.example.testapp1.feature.searchNewsFragment.presentation.SearchNewsViewModel
 import com.example.testapp1.feature.ui.NewsAdapter
-import com.example.testapp1.utils.BaseClasses.BaseFragment
+import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.Constants
 import com.example.testapp1.utils.Resource
 import com.example.testapp1.utils.hasInternetConnection
@@ -37,6 +39,15 @@ class SearchNewsFragment :
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
+
+    override fun onAttach(context: Context) {
+        DaggerFeatureComponent
+            .builder()
+            .searchNewsFragmentModule(SearchNewsFragmentModule(this))
+            .build()
+            .inject(this)
+        super.onAttach(context)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

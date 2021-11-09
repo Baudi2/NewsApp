@@ -13,8 +13,13 @@ import com.example.testapp1.feature.searchNewsFragment.ui.SearchNewsFragment
 import dagger.Component
 
 @Component(
-    dependencies = [DomainComponent::class], modules = [ArticleFragmentModule::class,
-        BreakingNewsFragmentModule::class, SavedNewsFragmentModule::class, SearchNewsFragmentModule::class]
+    dependencies = [DomainComponent::class],
+    modules = [
+        ArticleFragmentModule::class,
+        BreakingNewsFragmentModule::class,
+        SavedNewsFragmentModule::class,
+        SearchNewsFragmentModule::class
+    ]
 )
 @FeatureScope
 interface FeatureComponent {

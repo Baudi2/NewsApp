@@ -5,16 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testapp1.NewsApplication
 import com.example.testapp1.data.remote.model.ArticleRemote
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.databinding.FragmentBreakingNewsBinding
+import com.example.testapp1.di.feature.component.DaggerFeatureComponent
+import com.example.testapp1.di.feature.module.BreakingNewsFragmentModule
 import com.example.testapp1.feature.breakingNewsFragment.presentation.BreakingNewsViewModel
 import com.example.testapp1.feature.ui.NewsAdapter
-import com.example.testapp1.utils.BaseClasses.BaseFragment
+import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.Constants.Companion.QUERY_PAGE_SIZE
 import com.example.testapp1.utils.Resource
 import com.example.testapp1.utils.hasInternetConnection
@@ -33,6 +33,11 @@ class BreakingNewsFragment :
     var isScrolling = false
 
     override fun onAttach(context: Context) {
+        DaggerFeatureComponent
+            .builder()
+            .breakingNewsFragmentModule(BreakingNewsFragmentModule(this))
+            .build()
+            .inject(this)
         super.onAttach(context)
     }
 

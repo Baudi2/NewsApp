@@ -6,8 +6,10 @@ import android.view.View
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.navArgs
 import com.example.testapp1.databinding.FragmentArticleBinding
+import com.example.testapp1.di.feature.component.DaggerFeatureComponent
+import com.example.testapp1.di.feature.module.ArticleFragmentModule
 import com.example.testapp1.feature.articleFragment.presentation.ArticleFragmentViewModel
-import com.example.testapp1.utils.BaseClasses.BaseFragment
+import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -18,6 +20,11 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
     private val args: ArticleFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {
+        DaggerFeatureComponent
+            .builder()
+            .articleFragmentModule(ArticleFragmentModule(this))
+            .build()
+            .inject(this)
         super.onAttach(context)
     }
 

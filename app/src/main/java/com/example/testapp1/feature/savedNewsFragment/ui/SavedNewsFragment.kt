@@ -1,15 +1,17 @@
 package com.example.testapp1.feature.savedNewsFragment.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp1.data.local.model.ArticleEntity
 import com.example.testapp1.databinding.FragmentSavedNewsBinding
+import com.example.testapp1.di.feature.component.DaggerFeatureComponent
+import com.example.testapp1.di.feature.module.SavedNewsFragmentModule
 import com.example.testapp1.feature.savedNewsFragment.presentation.SavedNewsViewModel
-import com.example.testapp1.utils.BaseClasses.BaseFragment
+import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_saved_news.*
 import javax.inject.Inject
@@ -21,6 +23,15 @@ class SavedNewsFragment :
     @Inject
     lateinit var viewModel: SavedNewsViewModel
     private val newsAdapter by lazy { SavedNewsAdapter() }
+
+    override fun onAttach(context: Context) {
+        DaggerFeatureComponent
+            .builder()
+            .savedNewsFragmentModule(SavedNewsFragmentModule(this))
+            .build()
+            .inject(this)
+        super.onAttach(context)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
