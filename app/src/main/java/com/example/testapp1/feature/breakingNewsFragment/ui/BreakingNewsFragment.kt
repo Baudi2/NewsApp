@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp1.data.remote.model.ArticleRemote
@@ -153,13 +154,13 @@ class BreakingNewsFragment :
     }
 
     private fun navigate(articleRemote: ArticleRemote) {
-//        findNavController().navigate(
-//            BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(
-//                articleRemote,
-//                null
-//            )
-//        )
-        //TODO: deal with navigation
+        findNavController().navigate(
+            BreakingNewsFragmentDirections
+                .actionBreakingNewsFragmentToArticleFragment(
+                    articleRemote,
+                    null
+                )
+        )
     }
 
     private fun setupRecyclerView() {

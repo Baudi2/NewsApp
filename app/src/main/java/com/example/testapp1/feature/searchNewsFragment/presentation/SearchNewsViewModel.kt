@@ -16,6 +16,7 @@ import javax.inject.Inject
 class SearchNewsViewModel @Inject constructor(
     private val searchedNewsInteractor: SearchedNewsInteractor
 ) : ViewModel() {
+    //TODO: second search results aren't displayed
 
     private val searchNewsMutable: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val searchNews: LiveData<Resource<NewsResponse>>

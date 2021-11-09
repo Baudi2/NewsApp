@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -108,13 +109,13 @@ class SavedNewsFragment :
     }
 
     private fun navigate(articleEntity: ArticleEntity) {
-//        findNavController().navigate(
-//            SavedNewsFragmentDirections.actionSavedNewsFragmentToArticleFragment(
-//                null,
-//                articleEntity
-//            )
-//        )
-        //TODO: deal with navigation
+        findNavController().navigate(
+            SavedNewsFragmentDirections
+                .actionSavedNewsFragmentToArticleFragment(
+                    null,
+                    articleEntity
+                )
+        )
     }
 
     private fun setupRecyclerView() {
