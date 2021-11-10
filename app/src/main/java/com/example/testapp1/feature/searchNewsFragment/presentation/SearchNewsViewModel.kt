@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SearchNewsViewModel @Inject constructor(
     private val searchedNewsInteractor: SearchedNewsInteractor
 ) : ViewModel() {
-    //TODO: second search results aren't displayed
+    //TODO: handle second search for the same query after coming back
 
     private val searchNewsMutable: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val searchNews: LiveData<Resource<NewsResponse>>
@@ -24,6 +24,8 @@ class SearchNewsViewModel @Inject constructor(
 
     var searchNewsPage = 1
     private var searchNewsResponse: NewsResponse? = null
+
+    var searchQuery: String? = null
 
     fun getSearchNewsCall(searchQuery: String, hasInternetConnection: Boolean) {
         searchNewsMutable.postValue(Resource.Loading())
@@ -56,6 +58,7 @@ class SearchNewsViewModel @Inject constructor(
                 } else {
                     val oldArticles = searchNewsResponse?.articles
                     val newArticles = resultResponse.articles
+                    if (!oldArticles.isNullOrEmpty()) oldArticles.clear()
                     oldArticles?.addAll(newArticles)
                 }
                 return Resource.Success(searchNewsResponse ?: resultResponse)

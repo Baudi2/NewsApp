@@ -25,9 +25,9 @@ import com.example.testapp1.di.feature.component.DaggerFeatureComponent
 import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.searchNewsFragment.presentation.SearchNewsViewModel
 import com.example.testapp1.feature.ui.NewsAdapter
-import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.Constants
 import com.example.testapp1.utils.Resource
+import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.hasInternetConnection
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 import kotlinx.android.synthetic.main.fragment_search_news.*
@@ -66,7 +66,11 @@ class SearchNewsFragment :
                             .repositoryModule(RepositoryModule())
                             .applicationComponent(
                                 DaggerApplicationComponent.builder()
-                                    .applicationContextModule(ApplicationContextModule(requireActivity().application))
+                                    .applicationContextModule(
+                                        ApplicationContextModule(
+                                            requireActivity().application
+                                        )
+                                    )
                                     .build()
                             )
                             .build()
@@ -111,6 +115,7 @@ class SearchNewsFragment :
                 delay(SEARCH_NEWS_TIME_DELAY)
                 editable?.let {
                     if (editable.toString().isNotEmpty()) {
+                        viewModel.searchQuery = editable.toString()
                         viewModel.getSearchNewsCall(
                             editable.toString(),
                             requireContext().hasInternetConnection()
