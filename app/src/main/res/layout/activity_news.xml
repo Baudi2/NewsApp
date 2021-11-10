@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".feature.NewsActivity">
 
+    <!-- TODO: refactor resources, clear hardcoded values -->
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_for_fragments"
         app:defaultNavHost="true"
