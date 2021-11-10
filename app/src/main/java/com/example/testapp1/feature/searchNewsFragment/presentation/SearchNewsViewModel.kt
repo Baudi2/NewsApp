@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testapp1.business.SearchedNewsInteractor
+import com.example.testapp1.business.SearchedNewsUseCase
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class SearchNewsViewModel @Inject constructor(
-    private val searchedNewsInteractor: SearchedNewsInteractor
+    private val searchedNewsUseCase: SearchedNewsUseCase
 ) : ViewModel() {
     //TODO: handle second search for the same query after coming back
 
@@ -34,7 +34,7 @@ class SearchNewsViewModel @Inject constructor(
                 viewModelScope.launch(Dispatchers.IO) {
                     searchNewsMutable.postValue(
                         handleSearchNewsResponse(
-                            searchedNewsInteractor.get(searchQuery, searchNewsPage)
+                            searchedNewsUseCase.get(searchQuery, searchNewsPage)
                         )
                     )
                 }
@@ -60,6 +60,7 @@ class SearchNewsViewModel @Inject constructor(
                     val newArticles = resultResponse.articles
                     if (!oldArticles.isNullOrEmpty()) oldArticles.clear()
                     oldArticles?.addAll(newArticles)
+                    //TODO: since old ones are deleted this search doesn't paginate when scrolling down
                 }
                 return Resource.Success(searchNewsResponse ?: resultResponse)
             }

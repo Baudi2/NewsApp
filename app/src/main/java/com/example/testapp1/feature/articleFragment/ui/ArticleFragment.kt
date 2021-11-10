@@ -6,6 +6,7 @@ import android.view.View
 import android.webkit.WebViewClient
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.example.testapp1.R
 import com.example.testapp1.databinding.FragmentArticleBinding
 import com.example.testapp1.di.app.ApplicationContextModule
 import com.example.testapp1.di.app.DaggerApplicationComponent
@@ -74,7 +75,7 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
             binding.fab.visibility = View.VISIBLE
             binding.fab.setOnClickListener {
                 viewModel.save(articleRemote)
-                Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view, getString(R.string.article_saved_successfully), Snackbar.LENGTH_SHORT).show()
             }
         } else {
             binding.fab.visibility = View.GONE

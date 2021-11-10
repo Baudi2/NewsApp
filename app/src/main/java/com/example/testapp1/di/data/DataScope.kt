@@ -2,6 +2,6 @@ package com.example.testapp1.di.data
 
 import javax.inject.Scope
 
-@Retention(AnnotationRetention.RUNTIME)
 @Scope
+@Retention(AnnotationRetention.RUNTIME)
 annotation class DataScope

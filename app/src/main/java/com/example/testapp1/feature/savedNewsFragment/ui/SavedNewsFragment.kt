@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testapp1.R
 import com.example.testapp1.data.local.model.ArticleEntity
 import com.example.testapp1.databinding.FragmentSavedNewsBinding
 import com.example.testapp1.di.app.ApplicationContextModule
@@ -64,7 +65,7 @@ class SavedNewsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+        initRecyclerView()
         initTouchListener()
 
         newsAdapter.setOnItemClickListener {
@@ -93,9 +94,9 @@ class SavedNewsFragment :
                 val position = viewHolder.adapterPosition
                 val article = newsAdapter.currentList[position]
                 viewModel.deleteArticle(article)
-                Snackbar.make(requireView(), "Successfully deleted article", Snackbar.LENGTH_LONG)
+                Snackbar.make(requireView(), getString(R.string.successfully_deleted_article), Snackbar.LENGTH_LONG)
                     .apply {
-                        setAction("Undo") {
+                        setAction(getString(R.string.undo)) {
                             viewModel.reloadArticle(article)
                         }
                         show()
@@ -118,10 +119,10 @@ class SavedNewsFragment :
         )
     }
 
-    private fun setupRecyclerView() {
+    private fun initRecyclerView() {
         rvSavedNews.apply {
             adapter = newsAdapter
-            layoutManager = LinearLayoutManager(activity)
+            layoutManager = LinearLayoutManager(requireContext())
         }
     }
 }

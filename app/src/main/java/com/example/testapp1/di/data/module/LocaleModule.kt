@@ -14,7 +14,7 @@ class LocaleModule {
     @Provides
     @DataScope
     fun provideArticleDatabase(context: Application) : ArticleDatabase {
-        return Room.databaseBuilder(context, ArticleDatabase::class.java, "article_database")
+        return Room.databaseBuilder(context, ArticleDatabase::class.java, ArticleDatabase.DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
     }

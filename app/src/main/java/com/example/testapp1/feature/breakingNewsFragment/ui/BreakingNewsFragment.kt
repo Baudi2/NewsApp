@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testapp1.R
 import com.example.testapp1.data.remote.model.ArticleRemote
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.databinding.FragmentBreakingNewsBinding
@@ -42,9 +43,9 @@ class BreakingNewsFragment :
     }
     private val newsAdapter by lazy { NewsAdapter() }
 
-    var isLoading = false
-    var isLastPage = false
-    var isScrolling = false
+    private var isLoading = false
+    private var isLastPage = false
+    private var isScrolling = false
 
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
@@ -59,7 +60,11 @@ class BreakingNewsFragment :
                             .repositoryModule(RepositoryModule())
                             .applicationComponent(
                                 DaggerApplicationComponent.builder()
-                                    .applicationContextModule(ApplicationContextModule(requireActivity().application))
+                                    .applicationContextModule(
+                                        ApplicationContextModule(
+                                            requireActivity().application
+                                        )
+                                    )
                                     .build()
                             )
                             .build()
@@ -73,13 +78,16 @@ class BreakingNewsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+        initRecyclerView()
 
         newsAdapter.setOnItemClickListener {
             navigate(it)
         }
 
-        viewModel.getBreakingNews("ru", requireContext().hasInternetConnection())
+        viewModel.getBreakingNews(
+            getString(R.string.country_code),
+            requireContext().hasInternetConnection()
+        )
 
         viewModel.breakingNews.observe(viewLifecycleOwner, { response ->
             when (response) {
@@ -89,8 +97,11 @@ class BreakingNewsFragment :
                 is Resource.Error -> {
                     handleError(response)
                 }
+                is Resource.LocalError -> {
+                    handleLocalError(response)
+                }
                 is Resource.Loading -> {
-                    showProgressBar()
+                    progressBarVisibility(true)
                 }
             }
         })
@@ -111,7 +122,7 @@ class BreakingNewsFragment :
     }
 
     private fun handleSuccess(response: Resource<NewsResponse>) {
-        hideProgressBar()
+        progressBarVisibility(false)
         response.data?.let { newsResponse ->
             newsAdapter.submitList(newsResponse.articles.toList())
             val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
@@ -123,21 +134,31 @@ class BreakingNewsFragment :
     }
 
     private fun handleError(response: Resource<NewsResponse>) {
-        hideProgressBar()
+        progressBarVisibility(false)
         response.message?.let { message ->
-            Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
+            Toast.makeText(
+                activity,
+                String.format(getString(R.string.error_message, message)),
+                Toast.LENGTH_LONG
+            )
                 .show()
         }
     }
 
-    private fun hideProgressBar() {
-        paginationProgressBar.visibility = View.INVISIBLE
-        isLoading = false
+    private fun handleLocalError(response: Resource<NewsResponse>) {
+        progressBarVisibility(false)
+        response.localMessage?.let { message ->
+            Toast.makeText(
+                requireContext(),
+                String.format(getString(R.string.error_message), getText(message)),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
-    private fun showProgressBar() {
-        paginationProgressBar.visibility = View.VISIBLE
-        isLoading = true
+    private fun progressBarVisibility(isVisible: Boolean) {
+        binding.paginationProgressBar.visibilityIf(isVisible)
+        isLoading = isVisible
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -164,7 +185,10 @@ class BreakingNewsFragment :
             val shouldPaginate = isNotLoadingPageAndNotLastPage && isAtLastItem && isNotAtBeginning
                     && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                viewModel.getBreakingNews("ru", requireContext().hasInternetConnection())
+                viewModel.getBreakingNews(
+                    getString(R.string.country_code),
+                    requireContext().hasInternetConnection()
+                )
                 isScrolling = false
             }
         }
@@ -180,7 +204,7 @@ class BreakingNewsFragment :
         )
     }
 
-    private fun setupRecyclerView() {
+    private fun initRecyclerView() {
         rvBreakingNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)

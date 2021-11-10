@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">TestApp1</string>
+    <string name="app_name">News App</string>
+    <string name="article_saved_successfully">Article saved successfully</string>
+    <string name="error_no_internet_connection">No internet connection</string>
+    <string name="error_network_failure">Network Failure</string>
+    <string name="conversion_error">Conversion Error</string>
+    <string name="error_message">An error occurred: %1$s</string>
+    <string name="country_code">ru</string>
+    <string name="successfully_deleted_article">Successfully deleted article</string>
+    <string name="undo">Undo</string>
 </resources>

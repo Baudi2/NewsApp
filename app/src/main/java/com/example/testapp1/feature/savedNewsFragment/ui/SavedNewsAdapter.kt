@@ -24,6 +24,10 @@ class SavedNewsAdapter :
         holderSaved.bind(getItem(position))
     }
 
+    fun setOnItemClickListener(listener: (ArticleEntity) -> Unit) {
+        onItemClickListener = listener
+    }
+
     inner class SavedArticleViewHolder(private val binding: ItemArticlePreviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(articleEntity: ArticleEntity) {
@@ -48,9 +52,5 @@ class SavedNewsAdapter :
 
         override fun areContentsTheSame(oldItem: ArticleEntity, newItem: ArticleEntity) =
             oldItem == newItem
-    }
-
-    fun setOnItemClickListener(listener: (ArticleEntity) -> Unit) {
-        onItemClickListener = listener
     }
 }

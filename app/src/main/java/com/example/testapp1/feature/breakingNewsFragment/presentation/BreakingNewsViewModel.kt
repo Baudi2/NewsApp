@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testapp1.business.BreakingNewsInteractor
+import com.example.testapp1.R
+import com.example.testapp1.business.BreakingNewsUseCase
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class BreakingNewsViewModel @Inject constructor(
-    private val breakingNewsInteractor: BreakingNewsInteractor
+    private val breakingNewsUseCase: BreakingNewsUseCase
 ) : ViewModel() {
 
     private val breakingNewsMutable: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
@@ -31,17 +32,17 @@ class BreakingNewsViewModel @Inject constructor(
                 viewModelScope.launch(Dispatchers.IO) {
                     breakingNewsMutable.postValue(
                         handleBreakingNewsResponse(
-                            breakingNewsInteractor.get(countryCode, breakingNewsPage)
+                            breakingNewsUseCase.get(countryCode, breakingNewsPage)
                         )
                     )
                 }
             } else {
-                breakingNewsMutable.postValue(Resource.Error("No internet connection"))
+                breakingNewsMutable.postValue(Resource.LocalError(R.string.error_no_internet_connection))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> breakingNewsMutable.postValue(Resource.Error("Network Failure"))
-                else -> breakingNewsMutable.postValue(Resource.Error("Conversion Error"))
+                is IOException -> breakingNewsMutable.postValue(Resource.LocalError(R.string.error_network_failure))
+                else -> breakingNewsMutable.postValue(Resource.LocalError(R.string.conversion_error))
             }
         }
     }
