@@ -28,6 +28,7 @@ import com.example.testapp1.utils.Constants.Companion.QUERY_PAGE_SIZE
 import com.example.testapp1.utils.Resource
 import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.hasInternetConnection
+import com.example.testapp1.utils.visibilityIf
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 import javax.inject.Inject
 
@@ -95,6 +96,20 @@ class BreakingNewsFragment :
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+        changeVisibilityIfHasConnection(requireContext().hasInternetConnection())
+    }
+
+    private fun changeVisibilityIfHasConnection(hasConnection: Boolean) {
+        with(binding) {
+            rvBreakingNews.visibilityIf(hasConnection)
+            noConnectionImageviewBreaking.visibilityIf(!hasConnection)
+            noConnectionTitleTextViewBreaking.visibilityIf(!hasConnection)
+            noConnectionMessageTextViewBreaking.visibilityIf(!hasConnection)
+        }
+    }
+
     private fun handleSuccess(response: Resource<NewsResponse>) {
         hideProgressBar()
         response.data?.let { newsResponse ->
@@ -110,7 +125,7 @@ class BreakingNewsFragment :
     private fun handleError(response: Resource<NewsResponse>) {
         hideProgressBar()
         response.message?.let { message ->
-            Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG)
+            Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
                 .show()
         }
     }

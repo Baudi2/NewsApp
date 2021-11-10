@@ -29,6 +29,7 @@ import com.example.testapp1.utils.Constants
 import com.example.testapp1.utils.Resource
 import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.hasInternetConnection
+import com.example.testapp1.utils.visibilityIf
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 import kotlinx.android.synthetic.main.fragment_search_news.*
 import kotlinx.android.synthetic.main.fragment_search_news.paginationProgressBar
@@ -105,6 +106,20 @@ class SearchNewsFragment :
                 }
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        changeVisibilityIfHasConnection(requireContext().hasInternetConnection())
+    }
+
+    private fun changeVisibilityIfHasConnection(hasConnection: Boolean) {
+        with(binding) {
+            rvSearchNews.visibilityIf(hasConnection)
+            noConnectionImageviewSearch.visibilityIf(!hasConnection)
+            noConnectionTitleTextViewSearch.visibilityIf(!hasConnection)
+            noConnectionMessageTextViewSearch.visibilityIf(!hasConnection)
+        }
     }
 
     private fun delayedNewsSearch() {
