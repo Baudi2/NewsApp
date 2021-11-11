@@ -9,12 +9,12 @@ class RemoteToLocalMapper {
     fun map(articleRemote: ArticleRemote): ArticleEntity {
         with(articleRemote) {
             return ArticleEntity(
+                title!!,
                 articleInfo = ArticleInfo(
                     author,
                     content,
                     description,
                     publishedAt,
-                    title,
                     url,
                     urlToImage,
                 ),

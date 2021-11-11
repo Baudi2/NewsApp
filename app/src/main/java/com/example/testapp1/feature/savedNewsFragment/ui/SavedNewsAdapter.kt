@@ -35,7 +35,7 @@ class SavedNewsAdapter :
                 Glide.with(binding.root).load(articleEntity.articleInfo.urlToImage)
                     .into(ivArticleImage)
                 tvSource.text = articleEntity.sourceLocal?.name
-                tvTitle.text = articleEntity.articleInfo.title
+                tvTitle.text = articleEntity.title
                 tvDescription.text = articleEntity.articleInfo.description
                 tvPublishedAt.text = articleEntity.articleInfo.publishedAt
                 root.setOnClickListener {
@@ -47,7 +47,7 @@ class SavedNewsAdapter :
 
     class DiffCallback : DiffUtil.ItemCallback<ArticleEntity>() {
         override fun areItemsTheSame(oldItem: ArticleEntity, newItem: ArticleEntity) =
-            oldItem.id == newItem.id
+            oldItem.title == newItem.title
 
 
         override fun areContentsTheSame(oldItem: ArticleEntity, newItem: ArticleEntity) =
