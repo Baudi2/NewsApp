@@ -28,14 +28,19 @@ class SearchNewsViewModel @Inject constructor(
 
     var searchQuery: String? = null
 
-    fun getSearchNewsCall(searchQuery: String, hasInternetConnection: Boolean) {
+    fun getSearchNewsCall(
+        searchQuery: String,
+        hasInternetConnection: Boolean,
+        shouldPaginate: Boolean = false
+    ) {
         searchNewsMutable.postValue(Resource.Loading())
         try {
             if (hasInternetConnection) {
                 viewModelScope.launch(Dispatchers.IO) {
                     searchNewsMutable.postValue(
                         handleSearchNewsResponse(
-                            searchedNewsUseCase.get(searchQuery, searchNewsPage)
+                            searchedNewsUseCase.get(searchQuery, searchNewsPage),
+                            shouldPaginate
                         )
                     )
                 }
@@ -50,7 +55,10 @@ class SearchNewsViewModel @Inject constructor(
         }
     }
 
-    private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
+    private fun handleSearchNewsResponse(
+        response: Response<NewsResponse>,
+        shouldPaginate: Boolean
+    ): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 searchNewsPage++
@@ -59,9 +67,8 @@ class SearchNewsViewModel @Inject constructor(
                 } else {
                     val oldArticles = searchNewsResponse?.articles
                     val newArticles = resultResponse.articles
-                    if (!oldArticles.isNullOrEmpty()) oldArticles.clear()
+                    if (!oldArticles.isNullOrEmpty() && !shouldPaginate) oldArticles.clear()
                     oldArticles?.addAll(newArticles)
-                    //TODO: since old ones are deleted this search doesn't paginate when scrolling down
                 }
                 return Resource.Success(searchNewsResponse ?: resultResponse)
             }

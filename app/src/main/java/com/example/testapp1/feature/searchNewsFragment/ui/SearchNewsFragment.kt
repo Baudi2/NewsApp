@@ -211,7 +211,8 @@ class SearchNewsFragment :
             if (shouldPaginate) {
                 viewModel.getSearchNewsCall(
                     etSearch.text.toString(),
-                    requireContext().hasInternetConnection()
+                    requireContext().hasInternetConnection(),
+                    true
                 )
                 isScrolling = false
             }
