@@ -24,8 +24,8 @@ import com.example.testapp1.di.domain.module.InteractorModule
 import com.example.testapp1.di.feature.component.DaggerFeatureComponent
 import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.breakingNewsFragment.presentation.BreakingNewsViewModel
+import com.example.testapp1.feature.searchNewsFragment.ui.SearchNewsFragment.Companion.QUERY_PAGE_SIZE
 import com.example.testapp1.feature.ui.NewsAdapter
-import com.example.testapp1.utils.Constants.Companion.QUERY_PAGE_SIZE
 import com.example.testapp1.utils.Resource
 import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.hasInternetConnection
@@ -45,7 +45,6 @@ class BreakingNewsFragment :
 
     private var isLoading = false
     private var isLastPage = false
-    private var isScrolling = false
 
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
@@ -137,7 +136,7 @@ class BreakingNewsFragment :
         progressBarVisibility(false)
         response.message?.let { message ->
             Toast.makeText(
-                activity,
+                requireContext(),
                 String.format(getString(R.string.error_message, message)),
                 Toast.LENGTH_LONG
             )
@@ -162,6 +161,8 @@ class BreakingNewsFragment :
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
+
+        private var isScrolling = false
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)

@@ -6,15 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".feature.NewsActivity">
 
-    <!-- TODO: refactor resources, clear hardcoded values -->
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_for_fragments"
         app:defaultNavHost="true"
         app:navGraph="@navigation/news_nav_graph"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dimens_0_dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +21,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/dimens_56_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

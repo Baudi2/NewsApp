@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.testapp1.R
 import com.example.testapp1.business.SearchedNewsUseCase
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.utils.Resource
@@ -39,12 +40,12 @@ class SearchNewsViewModel @Inject constructor(
                     )
                 }
             } else {
-                searchNewsMutable.postValue(Resource.Error("No internet connection"))
+                searchNewsMutable.postValue(Resource.LocalError(R.string.error_no_internet_connection))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> searchNewsMutable.postValue(Resource.Error("Network Failure"))
-                else -> searchNewsMutable.postValue(Resource.Error("Conversion Error"))
+                is IOException -> searchNewsMutable.postValue(Resource.LocalError(R.string.error_network_failure))
+                else -> searchNewsMutable.postValue(Resource.LocalError(R.string.conversion_error))
             }
         }
     }
