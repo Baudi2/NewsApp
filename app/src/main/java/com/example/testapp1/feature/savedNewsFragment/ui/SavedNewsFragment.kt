@@ -23,6 +23,7 @@ import com.example.testapp1.di.feature.component.DaggerFeatureComponent
 import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.savedNewsFragment.presentation.SavedNewsViewModel
 import com.example.testapp1.utils.baseClasses.BaseFragment
+import com.example.testapp1.utils.visibilityIf
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_saved_news.*
 import javax.inject.Inject
@@ -51,7 +52,11 @@ class SavedNewsFragment :
                             .repositoryModule(RepositoryModule())
                             .applicationComponent(
                                 DaggerApplicationComponent.builder()
-                                    .applicationContextModule(ApplicationContextModule(requireActivity().application))
+                                    .applicationContextModule(
+                                        ApplicationContextModule(
+                                            requireActivity().application
+                                        )
+                                    )
                                     .build()
                             )
                             .build()
@@ -74,6 +79,8 @@ class SavedNewsFragment :
 
         viewModel.getSavedNews().observe(viewLifecycleOwner) {
             newsAdapter.submitList(it)
+            if (it.isNotEmpty()) changeVisibilityIfNoArticles(true)
+            if (it.isEmpty()) changeVisibilityIfNoArticles(false)
         }
     }
 
@@ -94,7 +101,11 @@ class SavedNewsFragment :
                 val position = viewHolder.adapterPosition
                 val article = newsAdapter.currentList[position]
                 viewModel.deleteArticle(article)
-                Snackbar.make(requireView(), getString(R.string.successfully_deleted_article), Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.successfully_deleted_article),
+                    Snackbar.LENGTH_LONG
+                )
                     .apply {
                         setAction(getString(R.string.undo)) {
                             viewModel.reloadArticle(article)
@@ -123,6 +134,15 @@ class SavedNewsFragment :
         rvSavedNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    private fun changeVisibilityIfNoArticles(hasArticles: Boolean) {
+        with(binding) {
+            rvSavedNews.visibilityIf(hasArticles)
+            noSavedArticlesImageView.visibilityIf(!hasArticles)
+            noSavedArticlesTitleTextView.visibilityIf(!hasArticles)
+            noSavedArticlesDescriptionTextView.visibilityIf(!hasArticles)
         }
     }
 }

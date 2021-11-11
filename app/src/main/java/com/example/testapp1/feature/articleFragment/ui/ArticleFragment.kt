@@ -32,6 +32,8 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
     }
     private val args: ArticleFragmentArgs by navArgs()
 
+    //TODO: fix saving to identical articles
+
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
             .builder()
