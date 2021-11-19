@@ -83,7 +83,7 @@ class SearchNewsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+        initRecyclerView()
 
         newsAdapter.setOnItemClickListener {
             navigate(it)
@@ -220,8 +220,8 @@ class SearchNewsFragment :
     }
 
 
-    private fun setupRecyclerView() {
-        rvSearchNews.apply {
+    private fun initRecyclerView() {
+        binding.rvSearchNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@SearchNewsFragment.scrollListener)

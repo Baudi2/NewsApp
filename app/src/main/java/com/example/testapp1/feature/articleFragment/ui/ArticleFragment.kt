@@ -20,6 +20,7 @@ import com.example.testapp1.di.feature.component.DaggerFeatureComponent
 import com.example.testapp1.di.feature.module.ViewModelFactory
 import com.example.testapp1.feature.articleFragment.presentation.ArticleFragmentViewModel
 import com.example.testapp1.utils.baseClasses.BaseFragment
+import com.example.testapp1.utils.visibilityIf
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -31,8 +32,6 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
         viewModelFactory
     }
     private val args: ArticleFragmentArgs by navArgs()
-
-    //TODO: fix saving to identical articles
 
     override fun onAttach(context: Context) {
         DaggerFeatureComponent
@@ -74,13 +73,13 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
         }
 
         if (articleRemote != null) {
-            binding.fab.visibility = View.VISIBLE
+            binding.fab.visibilityIf(true)
             binding.fab.setOnClickListener {
                 viewModel.save(articleRemote)
                 Snackbar.make(view, getString(R.string.article_saved_successfully), Snackbar.LENGTH_SHORT).show()
             }
         } else {
-            binding.fab.visibility = View.GONE
+            binding.fab.visibilityIf(false)
         }
     }
 }
