@@ -14,7 +14,7 @@ import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
-class SearchNewsViewModel @Inject constructor(
+class SearchNewsViewModel (
     private val searchedNewsUseCase: SearchedNewsUseCase
 ) : ViewModel() {
     //TODO: handle second search for the same query after coming back

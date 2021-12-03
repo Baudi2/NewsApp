@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ArticleFragmentViewModel @Inject constructor(
+class ArticleFragmentViewModel (
     private val saveRemoteArticleUseCase: SaveRemoteArticleUseCase
 ) : ViewModel() {
     fun save(article: ArticleRemote) {

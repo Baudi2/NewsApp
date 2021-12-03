@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SavedNewsViewModel @Inject constructor(
+class SavedNewsViewModel (
     private val savedNewsInteractor: SavedNewsInteractor,
 ) : ViewModel() {
 

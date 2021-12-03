@@ -14,7 +14,7 @@ import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
-class BreakingNewsViewModel @Inject constructor(
+class BreakingNewsViewModel (
     private val breakingNewsUseCase: BreakingNewsUseCase
 ) : ViewModel() {
 

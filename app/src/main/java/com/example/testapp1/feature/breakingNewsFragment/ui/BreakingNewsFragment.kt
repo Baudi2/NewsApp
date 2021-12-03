@@ -13,12 +13,8 @@ import com.example.testapp1.R
 import com.example.testapp1.data.remote.model.ArticleRemote
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.databinding.FragmentBreakingNewsBinding
-import com.example.testapp1.di.app.ApplicationContextModule
 import com.example.testapp1.di.app.DaggerApplicationComponent
 import com.example.testapp1.di.data.component.DaggerDataComponent
-import com.example.testapp1.di.data.module.LocaleModule
-import com.example.testapp1.di.data.module.RemoteModule
-import com.example.testapp1.di.data.module.RepositoryModule
 import com.example.testapp1.di.domain.component.DaggerDomainComponent
 import com.example.testapp1.di.domain.module.InteractorModule
 import com.example.testapp1.di.feature.component.DaggerFeatureComponent
