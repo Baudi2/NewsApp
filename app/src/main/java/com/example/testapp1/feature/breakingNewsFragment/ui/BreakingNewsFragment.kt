@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,13 +12,6 @@ import com.example.testapp1.R
 import com.example.testapp1.data.remote.model.ArticleRemote
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.databinding.FragmentBreakingNewsBinding
-import com.example.testapp1.di.app.DaggerApplicationComponent
-import com.example.testapp1.di.data.component.DaggerDataComponent
-import com.example.testapp1.di.domain.component.DaggerDomainComponent
-import com.example.testapp1.di.domain.module.InteractorModule
-import com.example.testapp1.di.feature.component.DaggerFeatureComponent
-import com.example.testapp1.di.feature.module.ViewModelFactory
-import com.example.testapp1.feature.breakingNewsFragment.presentation.BreakingNewsViewModel
 import com.example.testapp1.feature.searchNewsFragment.ui.SearchNewsFragment.Companion.QUERY_PAGE_SIZE
 import com.example.testapp1.feature.ui.NewsAdapter
 import com.example.testapp1.utils.Resource
@@ -27,47 +19,20 @@ import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.hasInternetConnection
 import com.example.testapp1.utils.visibilityIf
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
-import javax.inject.Inject
 
 class BreakingNewsFragment :
     BaseFragment<FragmentBreakingNewsBinding>(FragmentBreakingNewsBinding::inflate) {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel: BreakingNewsViewModel by viewModels {
-        viewModelFactory
-    }
+//    lateinit var viewModelFactory: ViewModelFactory
+//    private val viewModel: BreakingNewsViewModel by viewModels {
+//        viewModelFactory
+//    }
     private val newsAdapter by lazy { NewsAdapter() }
 
     private var isLoading = false
     private var isLastPage = false
 
     override fun onAttach(context: Context) {
-        DaggerFeatureComponent
-            .builder()
-            .domainComponent(
-                DaggerDomainComponent.builder()
-                    .interactorModule(InteractorModule())
-                    .dataComponent(
-                        DaggerDataComponent.builder()
-                            .localeModule(LocaleModule())
-                            .remoteModule(RemoteModule())
-                            .repositoryModule(RepositoryModule())
-                            .applicationComponent(
-                                DaggerApplicationComponent.builder()
-                                    .applicationContextModule(
-                                        ApplicationContextModule(
-                                            requireActivity().application
-                                        )
-                                    )
-                                    .build()
-                            )
-                            .build()
-                    )
-                    .build()
-            )
-            .build()
-            .inject(this)
         super.onAttach(context)
     }
 
@@ -79,27 +44,27 @@ class BreakingNewsFragment :
             navigate(it)
         }
 
-        viewModel.getBreakingNews(
-            getString(R.string.country_code),
-            requireContext().hasInternetConnection()
-        )
+//        viewModel.getBreakingNews(
+//            getString(R.string.country_code),
+//            requireContext().hasInternetConnection()
+//        )
 
-        viewModel.breakingNews.observe(viewLifecycleOwner, { response ->
-            when (response) {
-                is Resource.Success -> {
-                    handleSuccess(response)
-                }
-                is Resource.Error -> {
-                    handleError(response)
-                }
-                is Resource.LocalError -> {
-                    handleLocalError(response)
-                }
-                is Resource.Loading -> {
-                    progressBarVisibility(true)
-                }
-            }
-        })
+//        viewModel.breakingNews.observe(viewLifecycleOwner, { response ->
+//            when (response) {
+//                is Resource.Success -> {
+//                    handleSuccess(response)
+//                }
+//                is Resource.Error -> {
+//                    handleError(response)
+//                }
+//                is Resource.LocalError -> {
+//                    handleLocalError(response)
+//                }
+//                is Resource.Loading -> {
+//                    progressBarVisibility(true)
+//                }
+//            }
+//        })
     }
 
     override fun onStart() {
@@ -121,7 +86,7 @@ class BreakingNewsFragment :
         response.data?.let { newsResponse ->
             newsAdapter.submitList(newsResponse.articles.toList())
             val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
-            isLastPage = viewModel.breakingNewsPage == totalPages
+//            isLastPage = viewModel.breakingNewsPage == totalPages
             if (isLastPage) {
                 rvBreakingNews.setPadding(0, 0, 0, 0)
             }
@@ -182,11 +147,11 @@ class BreakingNewsFragment :
             val shouldPaginate = isNotLoadingPageAndNotLastPage && isAtLastItem && isNotAtBeginning
                     && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                viewModel.getBreakingNews(
-                    getString(R.string.country_code),
-                    requireContext().hasInternetConnection()
-                )
-                isScrolling = false
+//                viewModel.getBreakingNews(
+//                    getString(R.string.country_code),
+//                    requireContext().hasInternetConnection()
+//                )
+//                isScrolling = false
             }
         }
     }

@@ -4,12 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebViewClient
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.testapp1.R
 import com.example.testapp1.databinding.FragmentArticleBinding
-import com.example.testapp1.di.feature.ViewModelFactory
-import com.example.testapp1.feature.articleFragment.presentation.ArticleFragmentViewModel
 import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.visibilityIf
 import com.google.android.material.snackbar.Snackbar
@@ -17,10 +14,10 @@ import com.google.android.material.snackbar.Snackbar
 class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBinding::inflate) {
 
 
-    lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel: ArticleFragmentViewModel by viewModels {
-        viewModelFactory
-    }
+//    lateinit var viewModelFactory: ViewModelFactory
+//    private val viewModel: ArticleFragmentViewModel by viewModels {
+//        viewModelFactory
+//    }
     private val args: ArticleFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {
@@ -44,12 +41,12 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
         if (articleRemote != null) {
             binding.fab.visibilityIf(true)
             binding.fab.setOnClickListener {
-                viewModel.save(articleRemote)
-                Snackbar.make(
-                    view,
-                    getString(R.string.article_saved_successfully),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+//                viewModel.save(articleRemote)
+//                Snackbar.make(
+//                    view,
+//                    getString(R.string.article_saved_successfully),
+//                    Snackbar.LENGTH_SHORT
+//                ).show()
             }
         } else {
             binding.fab.visibilityIf(false)
