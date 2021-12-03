@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
-import javax.inject.Inject
 
 class BreakingNewsViewModel (
     private val breakingNewsUseCase: BreakingNewsUseCase
