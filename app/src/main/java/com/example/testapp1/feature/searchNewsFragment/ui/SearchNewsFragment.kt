@@ -1,6 +1,5 @@
 package com.example.testapp1.feature.searchNewsFragment.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
@@ -13,6 +12,7 @@ import com.example.testapp1.R
 import com.example.testapp1.data.remote.model.ArticleRemote
 import com.example.testapp1.data.remote.model.NewsResponse
 import com.example.testapp1.databinding.FragmentSearchNewsBinding
+import com.example.testapp1.feature.searchNewsFragment.presentation.SearchNewsViewModel
 import com.example.testapp1.feature.ui.NewsAdapter
 import com.example.testapp1.utils.Resource
 import com.example.testapp1.utils.baseClasses.BaseFragment
@@ -24,23 +24,18 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchNewsFragment :
     BaseFragment<FragmentSearchNewsBinding>(FragmentSearchNewsBinding::inflate) {
 
-//    lateinit var viewModelFactory: ViewModelFactory
-//    private val viewModel: SearchNewsViewModel by viewModels {
-//        viewModelFactory
-//    }
+    private val searchNewsViewModel: SearchNewsViewModel by viewModel()
+
     private val newsAdapter by lazy { NewsAdapter() }
 
     private var isLoading = false
     private var isLastPage = false
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,22 +47,22 @@ class SearchNewsFragment :
 
         delayedNewsSearch()
 
-//        viewModel.searchNews.observe(viewLifecycleOwner, { response ->
-//            when (response) {
-//                is Resource.Success -> {
-//                    handleSuccess(response)
-//                }
-//                is Resource.Error -> {
-//                    handleError(response)
-//                }
-//                is Resource.LocalError -> {
-//                    handleLocalError(response)
-//                }
-//                is Resource.Loading -> {
-//                    progressBarVisibility(true)
-//                }
-//            }
-//        })
+        searchNewsViewModel.searchNews.observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Success -> {
+                    handleSuccess(response)
+                }
+                is Resource.Error -> {
+                    handleError(response)
+                }
+                is Resource.LocalError -> {
+                    handleLocalError(response)
+                }
+                is Resource.Loading -> {
+                    progressBarVisibility(true)
+                }
+            }
+        })
     }
 
     override fun onStart() {
@@ -85,22 +80,22 @@ class SearchNewsFragment :
     }
 
     private fun delayedNewsSearch() {
-//        var job: Job? = null
-//        etSearch.addTextChangedListener { editable ->
-//            job?.cancel()
-//            job = MainScope().launch {
-//                delay(SEARCH_NEWS_TIME_DELAY)
-//                editable?.let {
-//                    if (editable.toString().isNotEmpty()) {
-//                        viewModel.searchQuery = editable.toString()
-//                        viewModel.getSearchNewsCall(
-//                            editable.toString(),
-//                            requireContext().hasInternetConnection()
-//                        )
-//                    }
-//                }
-//            }
-//        }
+        var job: Job? = null
+        etSearch.addTextChangedListener { editable ->
+            job?.cancel()
+            job = MainScope().launch {
+                delay(SEARCH_NEWS_TIME_DELAY)
+                editable?.let {
+                    if (editable.toString().isNotEmpty()) {
+                        searchNewsViewModel.searchQuery = editable.toString()
+                        searchNewsViewModel.getSearchNewsCall(
+                            editable.toString(),
+                            requireContext().hasInternetConnection()
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun handleSuccess(response: Resource<NewsResponse>) {
@@ -108,7 +103,7 @@ class SearchNewsFragment :
         response.data?.let { newsResponse ->
             newsAdapter.submitList(newsResponse.articles.toList())
             val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
-//            isLastPage = viewModel.searchNewsPage == totalPages
+            isLastPage = searchNewsViewModel.searchNewsPage == totalPages
             if (isLastPage) {
                 rvSearchNews.setPadding(0, 0, 0, 0)
             }
@@ -170,12 +165,12 @@ class SearchNewsFragment :
             val shouldPaginate = isNotLoadingPageAndNotLastPage && isAtLastItem && isNotAtBeginning
                     && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-//                viewModel.getSearchNewsCall(
-//                    etSearch.text.toString(),
-//                    requireContext().hasInternetConnection(),
-//                    true
-//                )
-//                isScrolling = false
+                searchNewsViewModel.getSearchNewsCall(
+                    etSearch.text.toString(),
+                    requireContext().hasInternetConnection(),
+                    true
+                )
+                isScrolling = false
             }
         }
     }

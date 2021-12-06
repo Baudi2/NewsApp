@@ -1,28 +1,22 @@
 package com.example.testapp1.feature.articleFragment.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.navArgs
 import com.example.testapp1.R
 import com.example.testapp1.databinding.FragmentArticleBinding
+import com.example.testapp1.feature.articleFragment.presentation.ArticleFragmentViewModel
 import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.visibilityIf
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBinding::inflate) {
 
+    private val articleViewModel: ArticleFragmentViewModel by viewModel()
 
-//    lateinit var viewModelFactory: ViewModelFactory
-//    private val viewModel: ArticleFragmentViewModel by viewModels {
-//        viewModelFactory
-//    }
     private val args: ArticleFragmentArgs by navArgs()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,12 +35,12 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding>(FragmentArticleBind
         if (articleRemote != null) {
             binding.fab.visibilityIf(true)
             binding.fab.setOnClickListener {
-//                viewModel.save(articleRemote)
-//                Snackbar.make(
-//                    view,
-//                    getString(R.string.article_saved_successfully),
-//                    Snackbar.LENGTH_SHORT
-//                ).show()
+                articleViewModel.save(articleRemote)
+                Snackbar.make(
+                    view,
+                    getString(R.string.article_saved_successfully),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         } else {
             binding.fab.visibilityIf(false)

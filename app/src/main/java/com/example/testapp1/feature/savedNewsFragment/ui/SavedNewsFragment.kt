@@ -1,6 +1,5 @@
 package com.example.testapp1.feature.savedNewsFragment.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
@@ -10,24 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp1.R
 import com.example.testapp1.data.local.model.ArticleEntity
 import com.example.testapp1.databinding.FragmentSavedNewsBinding
+import com.example.testapp1.feature.savedNewsFragment.presentation.SavedNewsViewModel
 import com.example.testapp1.utils.baseClasses.BaseFragment
 import com.example.testapp1.utils.visibilityIf
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_saved_news.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SavedNewsFragment :
     BaseFragment<FragmentSavedNewsBinding>(FragmentSavedNewsBinding::inflate) {
 
-//    lateinit var viewModelFactory: ViewModelFactory
-//    private val viewModel: SavedNewsViewModel by viewModels {
-//        viewModelFactory
-//    }
-    private val newsAdapter by lazy { SavedNewsAdapter() }
+    private val savedNewsViewModel: SavedNewsViewModel by viewModel()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
+    private val newsAdapter by lazy { SavedNewsAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,11 +33,11 @@ class SavedNewsFragment :
             navigate(it)
         }
 
-//        viewModel.getSavedNews().observe(viewLifecycleOwner) {
-//            newsAdapter.submitList(it)
-//            if (it.isNotEmpty()) changeVisibilityIfNoArticles(true)
-//            if (it.isEmpty()) changeVisibilityIfNoArticles(false)
-//        }
+        savedNewsViewModel.getSavedNews().observe(viewLifecycleOwner) {
+            newsAdapter.submitList(it)
+            if (it.isNotEmpty()) changeVisibilityIfNoArticles(true)
+            if (it.isEmpty()) changeVisibilityIfNoArticles(false)
+        }
     }
 
     private fun initTouchListener() {
@@ -61,7 +56,7 @@ class SavedNewsFragment :
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val article = newsAdapter.currentList[position]
-//                viewModel.deleteArticle(article)
+                savedNewsViewModel.deleteArticle(article)
                 Snackbar.make(
                     requireView(),
                     getString(R.string.successfully_deleted_article),
@@ -69,7 +64,7 @@ class SavedNewsFragment :
                 )
                     .apply {
                         setAction(getString(R.string.undo)) {
-//                            viewModel.reloadArticle(article)
+                            savedNewsViewModel.reloadArticle(article)
                         }
                         show()
                     }
